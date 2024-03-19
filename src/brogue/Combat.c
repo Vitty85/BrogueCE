@@ -147,7 +147,11 @@ boolean attackHit(creature *attacker, creature *defender) {
 
 static void addMonsterToContiguousMonsterGrid(short x, short y, creature *monst, char grid[DCOLS][DROWS]) {
     short newX, newY;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     creature *tempMonst;
 
     grid[x][y] = true;
@@ -1595,7 +1599,7 @@ boolean inflictDamage(creature *attacker, creature *defender,
 }
 
 void addPoison(creature *monst, short durationIncrement, short concentrationIncrement) {
-    extern const color poisonColor;
+    const color poisonColor =           {0,     0,      0,      10,     50,         10,         0,      true};
     if (durationIncrement > 0) {
         if (monst == &player && !player.status[STATUS_POISONED]) {
             combatMessage("scalding poison fills your veins", &badMessageColor);

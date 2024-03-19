@@ -542,7 +542,11 @@ void startLevel(short oldLevelNumber, short stairDirection) {
     item *theItem;
     short i, j, x, y, px, py, flying, dir;
     boolean placedPlayer;
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
     unsigned long timeAway;
     short **mapToStairs;
     short **mapToPit;

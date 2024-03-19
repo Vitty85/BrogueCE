@@ -102,7 +102,11 @@ void applyInstantTileEffectsToCreature(creature *monst) {
     char buf[COLS], buf2[COLS], buf3[COLS];
     const char *s;
     short *x = &(monst->loc.x), *y = &(monst->loc.y), damage;
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
     item *theItem;
 
     if (monst->bookkeepingFlags & MB_IS_DYING) {
@@ -459,7 +463,11 @@ static void applyGradualTileEffectsToCreature(creature *monst, short ticks) {
     short x = monst->loc.x, y = monst->loc.y, damage;
     char buf[COLS * 5], buf2[COLS * 3];
     item *theItem;
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
 
     if (!(monst->status[STATUS_LEVITATING])
         && cellHasTerrainFlag((pos){ x, y }, T_IS_DEEP_WATER)
@@ -1138,7 +1146,11 @@ void promoteTile(short x, short y, enum dungeonLayers layer, boolean useFireDF) 
 }
 
 boolean exposeTileToElectricity(short x, short y) {
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
     boolean promotedSomething = false;
 
     if (!cellHasTMFlag((pos){ x, y }, TM_PROMOTES_ON_ELECTRICITY)) {
@@ -1154,10 +1166,15 @@ boolean exposeTileToElectricity(short x, short y) {
 }
 
 boolean exposeTileToFire(short x, short y, boolean alwaysIgnite) {
+#ifdef MIYOO    
+    int dir;
+    int layer;
+#else
+    enum directions dir;
     enum dungeonLayers layer;
+#endif
     short ignitionChance = 0, bestExtinguishingPriority = 1000, explosiveNeighborCount = 0;
     short newX, newY;
-    enum directions dir;
     boolean fireIgnited = false, explosivePromotion = false;
 
     if (!cellHasTerrainFlag((pos){ x, y }, T_IS_FLAMMABLE) || pmap[x][y].exposedToFire >= 12) {
@@ -1224,7 +1241,11 @@ static void updateVolumetricMedia() {
     unsigned long highestNeighborVolume;
     unsigned long sum;
     enum tileType gasType;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     unsigned short newGasVolume[DCOLS][DROWS];
 
     for (i=0; i<DCOLS; i++) {
@@ -1410,7 +1431,11 @@ void monstersFall() {
 void updateEnvironment() {
     short i, j, direction, newX, newY, promotions[DCOLS][DROWS];
     long promoteChance;
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
     const floorTileType *tile;
     boolean isVolumetricGas = false;
 
@@ -1580,7 +1605,11 @@ void updateAllySafetyMap() {
 }
 
 static void resetDistanceCellInGrid(short **grid, short x, short y) {
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     short newX, newY;
     for (dir = 0; dir < 4; dir++) {
         newX = x + nbDirs[dir][0];
@@ -2073,7 +2102,11 @@ static void decrementPlayerStatus() {
 }
 
 static boolean dangerChanged(boolean danger[4]) {
+#ifdef MIYOO    
+    for (int dir = 0; dir < 4; dir++) {
+#else
     for (enum directions dir = 0; dir < 4; dir++) {
+#endif
         const pos newLoc = posNeighborInDirection(player.loc, dir);
         if (danger[dir] != monsterAvoids(&player, newLoc)) {
             return true;
@@ -2084,7 +2117,11 @@ static boolean dangerChanged(boolean danger[4]) {
 
 void autoRest() {
     boolean danger[4];
+#ifdef MIYOO    
+    for (int dir = 0; dir < 4; dir++) {
+#else
     for (enum directions dir = 0; dir < 4; dir++) {
+#endif
         const pos newLoc = posNeighborInDirection(player.loc, dir);
         danger[dir] = monsterAvoids(&player, newLoc);
     }

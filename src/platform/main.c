@@ -258,7 +258,12 @@ int main(int argc, char *argv[])
             if (i + 1 < argc) {
                 int size = atoi(argv[i + 1]);
                 if (size > 0 && size <= 20) {
+#ifdef MIYOO                    
+		    windowWidth = 640;
+		    windowHeight = 480;
+#else
                     windowWidth = round(pow(1.1, size) * 620.);
+#endif
                     // Height set automatically
                 };
 

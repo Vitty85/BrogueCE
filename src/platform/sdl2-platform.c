@@ -272,8 +272,11 @@ static void _gameLoop() {
     initTiles();
 
     lastEvent.eventType = EVENT_ERROR;
-
+#ifdef MIYOO
+    resizeWindow(640, 480);
+#else
     resizeWindow(windowWidth, windowHeight);
+#endif
 
     int statusCode = rogueMain();
 

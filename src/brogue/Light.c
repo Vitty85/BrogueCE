@@ -207,7 +207,11 @@ static void recordOldLights() {
 
 void updateLighting() {
     short i, j, k;
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
     enum tileType tile;
 
     // Copy Light over oldLight

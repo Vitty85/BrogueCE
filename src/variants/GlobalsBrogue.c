@@ -1002,6 +1002,9 @@ strings, but they are equal (rogue.patchLevel is set to 0).
 // Version shown in ./brogue --version
 const char *brogueVersion = BROGUE_VERSION_STRING;
 
+#ifdef MIYOO
+const gameConstants brogueGameConst = {};
+#else
 const gameConstants brogueGameConst = {
     .majorVersion = BROGUE_MAJOR,
     .minorVersion = BROGUE_MINOR,
@@ -1060,6 +1063,7 @@ const gameConstants brogueGameConst = {
     .mainMenuTitleHeight = MENU_TITLE_HEIGHT,
     .mainMenuTitleWidth = MENU_TITLE_WIDTH
 };
+#endif
 
 void initializeGameVariantBrogue() {
 

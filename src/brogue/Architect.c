@@ -607,7 +607,11 @@ static void addMachineNumberToKey(item *theItem, short machineNumber, boolean di
 static void expandMachineInterior(char interior[DCOLS][DROWS], short minimumInteriorNeighbors) {
     boolean madeChange;
     short nbcount, newX, newY, i, j, layer;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
 
     do {
         madeChange = false;
@@ -733,7 +737,11 @@ static boolean fillInteriorForVestibuleMachine(char interior[DCOLS][DROWS], shor
 
 static void redesignInterior(char interior[DCOLS][DROWS], short originX, short originY, short theProfileIndex) {
     short i, j, n, newX, newY;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     pos orphanList[20];
     short orphanCount = 0;
     short **grid, **pathingGrid, **costGrid;
@@ -855,8 +863,13 @@ static void redesignInterior(char interior[DCOLS][DROWS], short originX, short o
 
 static void prepareInteriorWithMachineFlags(char interior[DCOLS][DROWS], short originX, short originY, unsigned long flags, short dungeonProfileIndex) {
     short i, j, newX, newY;
-    enum dungeonLayers layer;
+#ifdef MIYOO    
+    int dir;
+    int layer;
+#else
     enum directions dir;
+    enum dungeonLayers layer;
+#endif
 
     // If requested, clear and expand the room as far as possible until either it's convex or it bumps into surrounding rooms
     if (flags & BP_MAXIMIZE_INTERIOR) {
@@ -1940,7 +1953,11 @@ static void removeDiagonalOpenings() {
 
 static void insertRoomAt(short **dungeonMap, short **roomMap, const short roomToDungeonX, const short roomToDungeonY, const short xRoom, const short yRoom) {
     short newX, newY;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
 
     brogueAssert(coordinatesAreInMap(xRoom + roomToDungeonX, yRoom + roomToDungeonY));
 
@@ -2114,7 +2131,12 @@ static void designChunkyRoom(short **grid) {
 // a door out of that room, then return the outbound direction that the door faces.
 // Otherwise, return NO_DIRECTION.
 static enum directions directionOfDoorSite(short **grid, short x, short y) {
-    enum directions dir, solutionDir;
+#ifdef MIYOO    
+    int dir;
+#else
+    enum directions dir;
+#endif
+    enum directions solutionDir;
     short newX, newY, oppX, oppY;
 
     if (grid[x][y]) { // Already occupied
@@ -2144,7 +2166,11 @@ static enum directions directionOfDoorSite(short **grid, short x, short y) {
 
 static void chooseRandomDoorSites(short **roomMap, pos doorSites[4]) {
     short i, j, k, newX, newY;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     short **grid;
     boolean doorSiteFailed;
 
@@ -2195,7 +2221,11 @@ static void chooseRandomDoorSites(short **roomMap, pos doorSites[4]) {
 static void attachHallwayTo(short **grid, pos doorSites[4]) {
     short i, x, y, newX, newY, dirs[4];
     short length;
+#ifdef MIYOO    
+    int dir, dir2;
+#else
     enum directions dir, dir2;
+#endif
     boolean allowObliqueHallwayExit;
 
     // Pick a direction.
@@ -2470,7 +2500,11 @@ static void carveDungeon(short **grid) {
 static void finishWalls(boolean includingDiagonals) {
     short i, j, x1, y1;
     boolean foundExposure;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
 
     for (i=0; i<DCOLS; i++) {
         for (j=0; j<DROWS; j++) {
@@ -2558,7 +2592,11 @@ static void fillLake(short x, short y, short liquid, short scanWidth, char wreat
 
 static void lakeFloodFill(short x, short y, short **floodMap, short **grid, short **lakeMap, short dungeonToGridX, short dungeonToGridY) {
     short newX, newY;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
 
     floodMap[x][y] = true;
     for (dir=0; dir<4; dir++) {
@@ -3097,7 +3135,11 @@ short oppositeDirection(short theDir) {
 // blockingMap is optional.
 // Returns the size of the connected zone, and marks visited[][] with the zoneLabel.
 static short connectCell(short x, short y, short zoneLabel, char blockingMap[DCOLS][DROWS], char zoneMap[DCOLS][DROWS]) {
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     short newX, newY, size;
 
     zoneMap[x][y] = zoneLabel;

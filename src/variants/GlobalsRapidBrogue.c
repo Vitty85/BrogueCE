@@ -1005,6 +1005,17 @@ strings, but they are equal (rogue.patchLevel is set to 0).
 // Version shown in ./brogue --version
 const char *rapidBrogueVersion = RAPID_BROGUE_VERSION_STRING;
 
+#ifdef MIYOO    
+const gameConstants rapidBrogueGameConst = {};
+
+//rapidBrogueGameConst.majorVersion = RAPID_BROGUE_MAJOR;
+//rapidBrogueGameConst.minorVersion = RAPID_BROGUE_MINOR;
+//rapidBrogueGameConst.patchVersion = RAPID_BROGUE_PATCH;
+
+//rapidBrogueGameConst.versionString = RAPID_BROGUE_VERSION_STRING;
+//rapidBrogueGameConst.dungeonVersionString = RAPID_BROGUE_DUNGEON_VERSION_STRING;
+//rapidBrogueGameConst.patchVersionPattern = RAPID_BROGUE_PATCH_VERSION_PATTERN;
+#else
 const gameConstants rapidBrogueGameConst = {
     .majorVersion = RAPID_BROGUE_MAJOR,
     .minorVersion = RAPID_BROGUE_MINOR,
@@ -1063,6 +1074,7 @@ const gameConstants rapidBrogueGameConst = {
     .mainMenuTitleHeight = MENU_TITLE_HEIGHT,
     .mainMenuTitleWidth = MENU_TITLE_WIDTH
 };
+#endif
 
 void initializeGameVariantRapidBrogue() {
 

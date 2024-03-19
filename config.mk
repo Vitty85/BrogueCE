@@ -1,8 +1,8 @@
 # Where to look for game data files (found in 'bin'). Must be without trailing slashes!
 DATADIR := .
 
-# Host and target platform. Values: LINUXLIKE, WINDOWS, OS2
-SYSTEM := LINUXLIKE
+# Host and target platform. Values: MIYOO, LINUXLIKE, WINDOWS, OS2
+SYSTEM := MIYOO
 
 # Include terminal support. Requires ncurses
 TERMINAL := NO
@@ -16,7 +16,7 @@ SDL_CONFIG := sdl2-config
 WEBBROGUE := NO
 
 # Enable debugging mode. See top of Rogue.h for features
-DEBUG := NO
+DEBUG := YES
 
 # Declare this is a release build
 RELEASE := NO

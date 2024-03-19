@@ -131,7 +131,11 @@ static pos getClosestValidLocationOnMap(short **map, short x, short y) {
 
 static void processSnapMap(short **map) {
     short **costMap;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     short i, j, newX, newY;
 
     costMap = allocGrid();
@@ -962,7 +966,11 @@ void bakeColor(color *theColor) {
 }
 
 void shuffleTerrainColors(short percentOfCells, boolean refreshCells) {
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     short i, j;
 
     assureCosmeticRNG;
@@ -1099,7 +1107,12 @@ void getCellAppearance(pos loc, enum displayGlyph *returnChar, color *returnFore
     creature *monst = NULL;
     item *theItem = NULL;
     enum tileType tile = NOTHING;
-    enum dungeonLayers layer, maxLayer;
+#ifdef MIYOO    
+    int layer;
+#else
+    enum dungeonLayers layer;
+#endif
+    enum dungeonLayers maxLayer;
 
     assureCosmeticRNG;
 
@@ -2323,7 +2336,11 @@ static void displayLoops() {
 static void exploreKey(const boolean controlKey) {
     short x, y, finalX = 0, finalY = 0;
     short **exploreMap;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     boolean tooDark = false;
 
     // fight any adjacent enemies first

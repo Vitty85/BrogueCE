@@ -1,5 +1,8 @@
 bin/brogue bin/brogue.exe: $(objects) vars/cflags vars/LDFLAGS vars/libs vars/objects make/brogue.mk
 	$(CC) $(cflags) $(LDFLAGS) -o $@ $(objects) $(libs)
+ifeq ($(SYSTEM),MIYOO)
+	$(STRIP) bin/brogue
+endif
 # on windows, embedding the manifest modifies the executable, preventing debugging
 ifeq ($(SYSTEM),WINDOWS)
 ifeq ($(DEBUG),NO)

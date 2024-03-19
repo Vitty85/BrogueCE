@@ -116,7 +116,11 @@ void findReplaceGrid(short **grid, short findValueMin, short findValueMax, short
 // Flood-fills the grid from (x, y) along cells that are within the eligible range.
 // Returns the total count of filled cells.
 short floodFillGrid(short **grid, short x, short y, short eligibleValueMin, short eligibleValueMax, short fillValue) {
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     short newX, newY, fillCount = 1;
 
     brogueAssert(fillValue < eligibleValueMin || fillValue > eligibleValueMax);
@@ -364,7 +368,11 @@ boolean getQualifyingPathLocNear(short *retValX, short *retValY,
 
 static void cellularAutomataRound(short **grid, char birthParameters[9], char survivalParameters[9]) {
     short i, j, nbCount, newX, newY;
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     short **buffer2;
 
     buffer2 = allocGrid();
@@ -397,7 +405,11 @@ static void cellularAutomataRound(short **grid, char birthParameters[9], char su
 
 // Marks a cell as being a member of blobNumber, then recursively iterates through the rest of the blob
 static short fillContiguousRegion(short **grid, short x, short y, short fillValue) {
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
     short newX, newY, numberOfCells = 1;
 
     grid[x][y] = fillValue;

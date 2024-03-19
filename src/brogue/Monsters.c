@@ -2152,7 +2152,11 @@ static boolean creatureEligibleForSwarming(creature *monst) {
 // and there is an empty space adjacent to you AND the enemy, then move into that last space.
 // (In each case, "adjacent" excludes diagonal tiles obstructed by corner walls.)
 static enum directions monsterSwarmDirection(creature *monst, creature *enemy) {
+#ifdef MIYOO    
+    int dir, targetDir;
+#else
     enum directions dir, targetDir;
+#endif
     short dirList[8] = {0, 1, 2, 3, 4, 5, 6, 7};
     boolean alternateDirectionExists;
 
@@ -2738,7 +2742,11 @@ static boolean monstUseMagic(creature *monst) {
 
 static boolean isLocalScentMaximum(pos loc) {
     const short baselineScent = scentMap[loc.x][loc.y];
+#ifdef MIYOO    
+    for (int dir=0; dir< DIRECTION_COUNT; dir++) {
+#else
     for (enum directions dir=0; dir< DIRECTION_COUNT; dir++) {
+#endif
         pos newLoc = posNeighborInDirection(loc, dir);
         if (isPosInMap(newLoc)
             && (scentMap[newLoc.x][newLoc.y] > baselineScent)
@@ -2754,7 +2762,11 @@ static boolean isLocalScentMaximum(pos loc) {
 // Returns the direction the player's scent points to from a given cell. Returns -1 if the nose comes up blank.
 static enum directions scentDirection(creature *monst) {
     short newX, newY, x, y, newestX, newestY;
+#ifdef MIYOO    
+    int bestDirection = NO_DIRECTION, dir, dir2;
+#else
     enum directions bestDirection = NO_DIRECTION, dir, dir2;
+#endif
     unsigned short bestNearbyScent = 0;
     boolean canTryAgain = true;
     creature *otherMonst;
@@ -3637,7 +3649,11 @@ boolean moveMonster(creature *monst, short dx, short dy) {
     short confusedDirection, swarmDirection;
     creature *defender = NULL;
     creature *hitList[16] = {NULL};
+#ifdef MIYOO    
+    int dir;
+#else
     enum directions dir;
+#endif
 
     if (dx == 0 && dy == 0) {
         return false;

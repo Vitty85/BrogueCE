@@ -62,7 +62,11 @@ void playerRuns(short direction) {
 
 enum dungeonLayers highestPriorityLayer(short x, short y, boolean skipGas) {
     short bestPriority = 10000;
+#ifdef MIYOO    
+    int tt, best = 0;
+#else
     enum dungeonLayers tt, best = 0;
+#endif
 
     for (tt = 0; tt < NUMBER_TERRAIN_LAYERS; tt++) {
         if (tt == GAS && skipGas) {
@@ -77,7 +81,11 @@ enum dungeonLayers highestPriorityLayer(short x, short y, boolean skipGas) {
 }
 
 enum dungeonLayers layerWithTMFlag(short x, short y, unsigned long flag) {
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
 
     for (layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
         if (tileCatalog[pmap[x][y].layers[layer]].mechFlags & flag) {
@@ -88,7 +96,11 @@ enum dungeonLayers layerWithTMFlag(short x, short y, unsigned long flag) {
 }
 
 enum dungeonLayers layerWithFlag(short x, short y, unsigned long flag) {
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
 
     for (layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
         if (tileCatalog[pmap[x][y].layers[layer]].flags & flag) {
@@ -1483,7 +1495,11 @@ void calculateDistances(short **distanceMap, short destinationX, short destinati
 // a cell that the monster avoids.
 short nextStep(short **distanceMap, short x, short y, creature *monst, boolean preferDiagonals) {
     short newX, newY, bestScore;
+#ifdef MIYOO    
+    int dir, bestDir;
+#else
     enum directions dir, bestDir;
+#endif
     creature *blocker;
     boolean blocked;
 
@@ -1869,7 +1885,11 @@ enum directions adjacentFightingDir() {
     if (cellHasTerrainFlag(player.loc, T_OBSTRUCTS_PASSABILITY)) {
         return NO_DIRECTION;
     }
+#ifdef MIYOO    
+    for (int dir = 0; dir < DIRECTION_COUNT; dir++) {
+#else
     for (enum directions dir = 0; dir < DIRECTION_COUNT; dir++) {
+#endif
         const pos newLoc = posNeighborInDirection(player.loc, dir);
         creature *const monst = monsterAtLoc(newLoc);
         if (monst
@@ -2104,7 +2124,11 @@ boolean isDisturbed(short x, short y) {
 }
 
 void discover(short x, short y) {
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
     dungeonFeature *feat;
     if (cellHasTMFlag((pos){ x, y }, TM_IS_SECRET)) {
 

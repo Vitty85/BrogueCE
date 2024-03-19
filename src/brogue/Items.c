@@ -396,7 +396,11 @@ short chooseKind(const itemTable *theTable, short numKinds) {
 
 // Places an item at (x,y) if provided or else a random location if they're 0. Inserts item into the floor list.
 item *placeItemAt(item *theItem, pos dest) {
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
     char theItemName[DCOLS], buf[DCOLS];
 
     // If no valid position is supplied by the caller, choose a random one instead.
@@ -445,7 +449,11 @@ static void fillItemSpawnHeatMap(unsigned short heatMap[DCOLS][DROWS], unsigned 
     if (heatMap[loc.x][loc.y] > heatLevel) {
         heatMap[loc.x][loc.y] = heatLevel;
     }
+#ifdef MIYOO    
+    for (int dir = 0; dir < 4; dir++) {
+#else
     for (enum directions dir = 0; dir < 4; dir++) {
+#endif
         pos neighbor = posNeighborInDirection(loc, dir);
         if (isPosInMap(neighbor)
             && !cellHasTerrainFlag(neighbor, T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH | T_AUTO_DESCENT)
@@ -1168,7 +1176,11 @@ static boolean swapItemEnchants(const short machineNumber) {
 void updateFloorItems() {
     short x, y;
     char buf[DCOLS*3], buf2[DCOLS*3];
+#ifdef MIYOO    
+    int layer;
+#else
     enum dungeonLayers layer;
+#endif
     item *theItem, *nextItem;
 
     for (theItem=floorItems->nextItem; theItem != NULL; theItem = nextItem) {
@@ -1844,7 +1856,7 @@ void itemDetails(char *buf, item *theItem) {
     boolean singular, carried;
     fixpt enchant;
     fixpt currentDamage, newDamage;
-    short nextLevelState = 0, new, current, accuracyChange, damageChange;
+    short nextLevelState = 0, snew, current, accuracyChange, damageChange;
     unsigned long turnsSinceLatestUse;
     const char weaponRunicEffectDescriptions[NUMBER_WEAPON_RUNIC_KINDS][DCOLS] = {
         "time will stop while you take an extra turn",
@@ -2065,16 +2077,17 @@ void itemDetails(char *buf, item *theItem) {
                         currentDamage = (player.info.damage.lowerBound + player.info.damage.upperBound) * FP_FACTOR / 2;
                     }
 
-                    new = player.info.accuracy;
+                    snew = player.info.accuracy;
                     newDamage = (theItem->damage.lowerBound + theItem->damage.upperBound) * FP_FACTOR / 2;
                     if ((theItem->flags & ITEM_IDENTIFIED) || rogue.playbackOmniscience) {
-                        new = new * accuracyFraction(netEnchant(theItem)) / FP_FACTOR;
+                        snew = snew * accuracyFraction(netEnchant(theItem)) / FP_FACTOR;
                         newDamage = newDamage * damageFraction(netEnchant(theItem)) / FP_FACTOR;
                     } else {
-                        new = new * accuracyFraction(strengthModifier(theItem)) / FP_FACTOR;
+                        snew = snew * accuracyFraction(strengthModifier(theItem)) / FP_FACTOR;
+                        snew = snew * accuracyFraction(strengthModifier(theItem)) / FP_FACTOR;
                         newDamage = newDamage * damageFraction(strengthModifier(theItem)) / FP_FACTOR;
                     }
-                    accuracyChange  = (new * 100 / current) - 100;
+                    accuracyChange  = (snew * 100 / current) - 100;
                     damageChange    = (newDamage * 100 / currentDamage) - 100;
                     sprintf(buf2, "Wielding the %s%s will %s your current accuracy by %s%i%%%s, and will %s your current damage by %s%i%%%s. ",
                             theName,
@@ -2088,23 +2101,23 @@ void itemDetails(char *buf, item *theItem) {
                             abs((short) damageChange),
                             whiteColorEscape);
                 } else {
-                    new = 0;
+                    snew = 0;
 
                     if ((theItem->flags & ITEM_IDENTIFIED) || rogue.playbackOmniscience) {
-                        new = theItem->armor;
-                        new += 10 * netEnchant(theItem) / FP_FACTOR;
-                        new /= 10;
+                        snew = theItem->armor;
+                        snew += 10 * netEnchant(theItem) / FP_FACTOR;
+                        snew /= 10;
                     } else {
-                        new = armorValueIfUnenchanted(theItem);
+                        snew = armorValueIfUnenchanted(theItem);
                     }
 
-                    new = max(0, new);
+                    snew = max(0, snew);
 
                     sprintf(buf2, "Wearing the %s%s will result in an armor rating of %s%i%s. ",
                             theName,
                             ((theItem->flags & ITEM_IDENTIFIED) || rogue.playbackOmniscience) ? "" : ", assuming it has no hidden properties,",
-                            (new > displayedArmorValue() ? goodColorEscape : (new < displayedArmorValue() ? badColorEscape : whiteColorEscape)),
-                            new, whiteColorEscape);
+                            (snew > displayedArmorValue() ? goodColorEscape : (snew < displayedArmorValue() ? badColorEscape : whiteColorEscape)),
+                            snew, whiteColorEscape);
                 }
                 strcat(buf, buf2);
             }
@@ -2124,15 +2137,15 @@ void itemDetails(char *buf, item *theItem) {
                 && !(theItem->flags & ITEM_EQUIPPED)
                 && (current != armorStealthAdjustment(theItem))) {
 
-                new = armorStealthAdjustment(theItem);
+                snew = armorStealthAdjustment(theItem);
                 if (rogue.armor) {
-                    new -= armorStealthAdjustment(rogue.armor);
+                    snew -= armorStealthAdjustment(rogue.armor);
                 }
                 sprintf(buf2, "Equipping the %s will %s%s your stealth range by %i%s. ",
                         theName,
-                        new > 0 ? badColorEscape : goodColorEscape,
-                        new > 0 ? "increase" : "decrease",
-                        abs(new),
+                        snew > 0 ? badColorEscape : goodColorEscape,
+                        snew > 0 ? "increase" : "decrease",
+                        abs(snew),
                         whiteColorEscape);
                 strcat(buf, buf2);
             }
@@ -2396,21 +2409,21 @@ void itemDetails(char *buf, item *theItem) {
         case STAFF:
 
             // charges
-            new = apparentRingBonus(RING_WISDOM);
+            snew = apparentRingBonus(RING_WISDOM);
             if ((theItem->flags & ITEM_IDENTIFIED)  || rogue.playbackOmniscience) {
                 sprintf(buf2, "\n\nThe %s has %i charges remaining out of a maximum of %i charges, and%s recovers a charge in approximately %lli turns. ",
                         theName,
                         theItem->charges,
                         theItem->enchant1,
-                        new == 0 ? "" : ", with your current rings,",
-                        FP_DIV(staffChargeDuration(theItem), 10 * ringWisdomMultiplier(new * FP_FACTOR)));
+                        snew == 0 ? "" : ", with your current rings,",
+                        FP_DIV(staffChargeDuration(theItem), 10 * ringWisdomMultiplier(snew * FP_FACTOR)));
                 strcat(buf, buf2);
             } else if (theItem->flags & ITEM_MAX_CHARGES_KNOWN) {
                 sprintf(buf2, "\n\nThe %s has a maximum of %i charges, and%s recovers a charge in approximately %lli turns. ",
                         theName,
                         theItem->enchant1,
-                        new == 0 ? "" : ", with your current rings,",
-                        FP_DIV(staffChargeDuration(theItem), 10 * ringWisdomMultiplier(new * FP_FACTOR)));
+                        snew == 0 ? "" : ", with your current rings,",
+                        FP_DIV(staffChargeDuration(theItem), 10 * ringWisdomMultiplier(snew * FP_FACTOR)));
                 strcat(buf, buf2);
             }
 
@@ -3586,11 +3599,16 @@ static boolean impermissibleKinkBetween(short x1, short y1, short x2, short y2) 
 }
 
 static boolean tunnelize(short x, short y) {
-    enum dungeonLayers layer;
     boolean didSomething = false;
     creature *monst;
     short x2, y2;
+#ifdef MIYOO    
+    int dir;
+    int layer;
+#else
     enum directions dir;
+    enum dungeonLayers layer;
+#endif
 
     if (pmap[x][y].flags & IMPREGNABLE) {
         return false;
@@ -4121,7 +4139,7 @@ static void discordBlast(const char *emitterName, const short distance) {
 }
 
 static void crystalize(short radius) {
-    extern color forceFieldColor;
+    const color forceFieldColor =       {0,     25,     25,     0,      25,         25,         0,      true};
     short i, j;
     creature *monst;
 
