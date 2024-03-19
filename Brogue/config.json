@@ -1,0 +1,9 @@
+{
+"label":"BrogueCE",
+"icon":"asset/icon.png",
+"iconsel":"asset/icon.png",
+"launch":"launch.sh",
+"useswap":1,
+"noaudiofix":1,
+"description":"Welcome to the Dungeons of Doom!"
+}
