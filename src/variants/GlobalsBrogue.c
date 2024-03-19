@@ -1003,7 +1003,42 @@ strings, but they are equal (rogue.patchLevel is set to 0).
 const char *brogueVersion = BROGUE_VERSION_STRING;
 
 #ifdef MIYOO
-const gameConstants brogueGameConst = {};
+const gameConstants brogueGameConst = { BROGUE_MAJOR, BROGUE_MINOR, BROGUE_PATCH,
+     BROGUE_VERSION_STRING,
+     BROGUE_DUNGEON_VERSION_STRING,
+     BROGUE_PATCH_VERSION_PATTERN,
+     BROGUE_RECORDING_VERSION_STRING,
+     "brogue",
+     DEEPEST_LEVEL,
+     AMULET_LEVEL,
+     1,
+     4,
+     17,
+     10,
+     4,
+     2,
+     1,
+     2,
+     0,
+     6,
+     20,
+     20,
+     300,
+     50,
+     20,
+     1000,
+     1500,
+     8,
+     10,
+     sizeof(autoGeneratorCatalog_Brogue) / sizeof(autoGenerator),
+     sizeof(boltCatalog_Brogue) / sizeof(bolt),
+     sizeof(blueprintCatalog_Brogue) / sizeof(blueprint),
+     sizeof(potionTable_Brogue) / sizeof(itemTable),
+     8,
+     sizeof(scrollTable_Brogue) / sizeof(itemTable),
+     12,
+     sizeof(wandTable_Brogue) / sizeof(itemTable),
+     6, sizeof(charmTable_Brogue) / sizeof(itemTable), sizeof(meteredItemsGenerationTable_Brogue) / sizeof(meteredItemGenerationTable), sizeof(hordeCatalog_Brogue) / sizeof(hordeType), sizeof(featTable_Brogue) / sizeof(feat), 10400, MENU_TITLE_HEIGHT, MENU_TITLE_WIDTH };
 #else
 const gameConstants brogueGameConst = {
     .majorVersion = BROGUE_MAJOR,

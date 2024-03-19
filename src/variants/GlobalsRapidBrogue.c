@@ -1006,15 +1006,53 @@ strings, but they are equal (rogue.patchLevel is set to 0).
 const char *rapidBrogueVersion = RAPID_BROGUE_VERSION_STRING;
 
 #ifdef MIYOO    
-const gameConstants rapidBrogueGameConst = {};
-
-//rapidBrogueGameConst.majorVersion = RAPID_BROGUE_MAJOR;
-//rapidBrogueGameConst.minorVersion = RAPID_BROGUE_MINOR;
-//rapidBrogueGameConst.patchVersion = RAPID_BROGUE_PATCH;
-
-//rapidBrogueGameConst.versionString = RAPID_BROGUE_VERSION_STRING;
-//rapidBrogueGameConst.dungeonVersionString = RAPID_BROGUE_DUNGEON_VERSION_STRING;
-//rapidBrogueGameConst.patchVersionPattern = RAPID_BROGUE_PATCH_VERSION_PATTERN;
+const gameConstants rapidBrogueGameConst = {
+    RAPID_BROGUE_MAJOR,
+    RAPID_BROGUE_MINOR,
+    RAPID_BROGUE_PATCH,
+    RAPID_BROGUE_VERSION_STRING,
+    RAPID_BROGUE_DUNGEON_VERSION_STRING,
+    RAPID_BROGUE_PATCH_VERSION_PATTERN,
+    RAPID_BROGUE_RECORDING_VERSION_STRING,
+    "rapidBrogue",
+    DEEPEST_LEVEL,
+    AMULET_LEVEL,
+    4,
+    2,
+    5,
+    3,
+    2,
+    0,
+    3,
+    1,
+    4,
+    3,
+    10,
+    20,
+    100,
+    50,
+    5,
+    250,
+    250,
+    8,
+    10,
+    sizeof(autoGeneratorCatalog_RapidBrogue) / sizeof(autoGenerator),
+    sizeof(boltCatalog_RapidBrogue) / sizeof(bolt),
+    sizeof(blueprintCatalog_RapidBrogue) / sizeof(blueprint),
+    sizeof(potionTable_RapidBrogue) / sizeof(itemTable),
+    8,
+    sizeof(scrollTable_RapidBrogue) / sizeof(itemTable),
+    12,
+    sizeof(wandTable_RapidBrogue) / sizeof(itemTable),
+    6,
+    sizeof(charmTable_RapidBrogue) / sizeof(itemTable),
+    sizeof(meteredItemsGenerationTable_RapidBrogue) / sizeof(meteredItemGenerationTable),
+    sizeof(hordeCatalog_RapidBrogue) / sizeof(hordeType),
+    sizeof(featTable_RapidBrogue) / sizeof(feat),
+    2400,
+    MENU_TITLE_HEIGHT,
+    MENU_TITLE_WIDTH
+};
 #else
 const gameConstants rapidBrogueGameConst = {
     .majorVersion = RAPID_BROGUE_MAJOR,
